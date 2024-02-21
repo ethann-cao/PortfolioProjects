@@ -122,7 +122,8 @@ On 23 June 2022, we stopped adding new datapoints to our COVID-19 testing datase
 | `hospital_beds_per_thousand` | Hospital beds per 1,000 people, most recent year available since 2010                                                                                                                                                                      |
 | `life_expectancy`            | Life expectancy at birth in 2019                                                                                                                                                                                                           |
 | `human_development_index`    | A composite index measuring average achievement in three basic dimensions of human development—a long and healthy life, knowledge and a decent standard of living. Values for 2019, imported from http://hdr.undp.org/en/indicators/137506 |
-### Exploring Athletic Differences Between Genders
+
+### Exploring Analysis List
 
 1. **Deaths Analysis:**
    - Identify trends and patterns in COVID-19-related deaths.
@@ -136,9 +137,7 @@ On 23 June 2022, we stopped adding new datapoints to our COVID-19 testing datase
 
 To explore the detailed analysis and findings, check out The [Covid Portfolio Project.sql](https://github.com/ethann-cao/PortfolioProjects/blob/Master/Covid/Covid%20Portfolio%20Project.sql)
 
-```bash
-git clone https://github.com/your-username/powerlifting-database.git
-cd powerlifting-database/analysis
+```sql
 
 -- Using CTE
 
