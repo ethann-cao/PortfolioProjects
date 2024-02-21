@@ -140,3 +140,29 @@ To explore the detailed analysis and findings, check out The [Covid Portfolio Pr
 git clone https://github.com/your-username/powerlifting-database.git
 cd powerlifting-database/analysis
 
+```sql
+SELECT * 
+FROM portfolio_projects.`walmartsalesdata.csv` ;
+
+ -- Create time_of_day column --
+ -- Giving insight onto which time of day where the most sales are generally made  --
+ 
+Select Time, 
+(CASE 
+	WHEN `Time` BETWEEN "00:00:00" AND "12:00:00" THEN "Morning"
+	WHEN `Time` BETWEEN "12:0:01" AND "16:00:00" THEN "Afternoon"
+	ELSE "Evening"
+    END
+    )
+FROM portfolio_projects.`walmartsalesdata.csv`;
+
+ALTER TABLE portfolio_projects.`walmartsalesdata.csv` ADD day_name varchar(255);
+
+UPDATE portfolio_projects.`walmartsalesdata.csv` 
+SET Time_Of_Day = (CASE 
+	WHEN `Time` BETWEEN "00:00:00" AND "12:00:00" THEN "Morning"
+	WHEN `Time` BETWEEN "12:0:01" AND "16:00:00" THEN "Afternoon"
+	ELSE "Evening"
+    END
+);
+```
