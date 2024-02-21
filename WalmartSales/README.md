@@ -146,27 +146,28 @@ $ \text{Gross Margin Percentage} = \frac{\text{gross income}}{\text{total revenu
 For the rest of the code, check the [walmartsales_queries.sql](https://github.com/ethann-cao/PortfolioProjects/blob/Master/WalmartSales/walmartsales_queries.sql) file
 
 ```sql
--- Create database
-CREATE DATABASE IF NOT EXISTS walmartSales;
+SELECT * 
+FROM portfolio_projects.`walmartsalesdata.csv` ;
 
--- Create table
-CREATE TABLE IF NOT EXISTS sales(
-	invoice_id VARCHAR(30) NOT NULL PRIMARY KEY,
-    branch VARCHAR(5) NOT NULL,
-    city VARCHAR(30) NOT NULL,
-    customer_type VARCHAR(30) NOT NULL,
-    gender VARCHAR(30) NOT NULL,
-    product_line VARCHAR(100) NOT NULL,
-    unit_price DECIMAL(10,2) NOT NULL,
-    quantity INT NOT NULL,
-    tax_pct FLOAT(6,4) NOT NULL,
-    total DECIMAL(12, 4) NOT NULL,
-    date DATETIME NOT NULL,
-    time TIME NOT NULL,
-    payment VARCHAR(15) NOT NULL,
-    cogs DECIMAL(10,2) NOT NULL,
-    gross_margin_pct FLOAT(11,9),
-    gross_income DECIMAL(12, 4),
-    rating FLOAT(2, 1)
+ -- Create time_of_day column --
+ -- Giving insight onto which time of day where the most sales are generally made  --
+ 
+Select Time, 
+(CASE 
+	WHEN `Time` BETWEEN "00:00:00" AND "12:00:00" THEN "Morning"
+	WHEN `Time` BETWEEN "12:0:01" AND "16:00:00" THEN "Afternoon"
+	ELSE "Evening"
+    END
+    )
+FROM portfolio_projects.`walmartsalesdata.csv`;
+
+ALTER TABLE portfolio_projects.`walmartsalesdata.csv` ADD day_name varchar(255);
+
+UPDATE portfolio_projects.`walmartsalesdata.csv` 
+SET Time_Of_Day = (CASE 
+	WHEN `Time` BETWEEN "00:00:00" AND "12:00:00" THEN "Morning"
+	WHEN `Time` BETWEEN "12:0:01" AND "16:00:00" THEN "Afternoon"
+	ELSE "Evening"
+    END
 );
 ```
