@@ -140,29 +140,26 @@ To explore the detailed analysis and findings, check out The [Covid Portfolio Pr
 git clone https://github.com/your-username/powerlifting-database.git
 cd powerlifting-database/analysis
 
-```sql
-SELECT * 
-FROM portfolio_projects.`walmartsalesdata.csv` ;
+-- Using CTE
 
- -- Create time_of_day column --
- -- Giving insight onto which time of day where the most sales are generally made  --
- 
-Select Time, 
-(CASE 
-	WHEN `Time` BETWEEN "00:00:00" AND "12:00:00" THEN "Morning"
-	WHEN `Time` BETWEEN "12:0:01" AND "16:00:00" THEN "Afternoon"
-	ELSE "Evening"
-    END
-    )
-FROM portfolio_projects.`walmartsalesdata.csv`;
+With PopvsVac(Continent, Location, Date, Population, new_vaccinations, RollingVaccination) 
+as 
 
-ALTER TABLE portfolio_projects.`walmartsalesdata.csv` ADD day_name varchar(255);
+-- Total Population vs Vaccinations
+( 
+Select dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations
+, SUM(Cast(vac.new_vaccinations as int)) OVER (Partition by dea.location Order by dea.location, dea.Date) as RollingVaccination
 
-UPDATE portfolio_projects.`walmartsalesdata.csv` 
-SET Time_Of_Day = (CASE 
-	WHEN `Time` BETWEEN "00:00:00" AND "12:00:00" THEN "Morning"
-	WHEN `Time` BETWEEN "12:0:01" AND "16:00:00" THEN "Afternoon"
-	ELSE "Evening"
-    END
-);
+From PortfolioProject..CovidDeaths$ dea
+Join PortfolioProject..CovidVaccinations$ vac
+	On dea.location = vac.location
+	and dea.date = vac.date
+
+Where dea.continent is not null
+
+)
+
+Select *, (RollingVaccination/Population)*100 as PopulationPercentVaccinated
+From PopvsVac
+
 ```
